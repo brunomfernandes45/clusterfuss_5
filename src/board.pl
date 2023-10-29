@@ -1,7 +1,9 @@
 :- consult(game).
 
 draw_column_positions(0) :- nl.
-draw_column_positions(N) :- write('    ').
+draw_column_positions(Size) :- nl, write('    '), draw_column_positions_aux(Size, 0).
+draw_column_positions_aux(Size, Size) :- nl.
+draw_column_positions_aux(Size, Acc) :- Code is 0x41 + Acc, put_code(Code), write('   '), Acc1 is Acc + 1, draw_column_positions_aux(Size, Acc1).
 
 % draw_top_line(+N)
 % Draws the top line of the board
@@ -25,6 +27,7 @@ draw_middle_square_lines_aux(0, []) :- nl.
 draw_middle_square_lines_aux(Size, [H | T]) :- write(' '), symbol(H, S), write(S), write(' '), put_code(0x2502), Size1 is Size - 1, draw_middle_square_lines_aux(Size1, T).
 
 draw_board(Size, Board) :- N is Size * 4 - 1,
+                        draw_column_positions(Size),
                         draw_top_line(N), 
                         draw_middle(Size, N, Board, Size),
                         draw_bottom_line(N).
