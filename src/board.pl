@@ -1,5 +1,7 @@
 :- consult(game).
 
+% draw_column_positions(+Size)
+% Draws the column positions of the board
 draw_column_positions(0) :- nl.
 draw_column_positions(Size) :- nl, write('    '), draw_column_positions_aux(Size, 0).
 draw_column_positions_aux(Size, Size) :- nl.
