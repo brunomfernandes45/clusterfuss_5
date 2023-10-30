@@ -9,7 +9,7 @@ read_number(Number):-
 % Auxiliary predicate for read_number/1.
 read_number_aux(Number, Acc):- 
     get_code(Code),
-    between(48, 57, C), !,
+    between(48, 57, Code), !,
     Acc1 is 10 * Acc + Code - 48,
     read_number_aux(Number, Acc1).
 read_number_aux(Number, Number).

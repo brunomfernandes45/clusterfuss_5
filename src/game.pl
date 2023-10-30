@@ -1,13 +1,14 @@
-% board(+Size, -Board)
-% Returns a board of a given size
-board(4, [
+
+% initial_state(+Size, -GameState)
+% Returns a initial_state of a given size
+initial_state(4, [
     [red, blue, red, blue],
     [blue, red, blue, red],
     [red, blue, red, blue],
     [blue, red, blue, red]
 ]).
 
-board(6, [
+initial_state(6, [
     [red, blue, red, blue, red, blue],
     [blue, red, blue, red, blue, red],
     [red, blue, red, blue, red, blue],
@@ -16,7 +17,7 @@ board(6, [
     [blue, red, blue, red, blue, red]
 ]).
 
-board(8, [
+initial_state(8, [
     [red, blue, red, blue, red, blue, red, blue],
     [blue, red, blue, red, blue, red, blue, red],
     [red, blue, red, blue, red, blue, red, blue],
@@ -32,7 +33,3 @@ board(8, [
 switch_turn(player1, player2).
 switch_turn(player2, player1).
 
-% symbol(+Color, -Symbol)
-% Returns the symbol for a given color
-symbol(red, 'R').
-symbol(blue, 'B').
