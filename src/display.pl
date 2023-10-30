@@ -63,7 +63,7 @@ display_game([Player | Board]) :- length(Board, Size),
                         display_turn(Player).
 
 
-:- initial_state(8, _X), display_game(['Joe'|_X]).
+:- initial_state(8, _X), display_game(['Joe' | _X]).
 
 
 

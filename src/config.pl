@@ -29,4 +29,9 @@ menu :-
         (Option = 5, !, halt)
     ).
 
+% config(-GameState)
+% Configures the game according to the user's option
+config(GameState) :- menu,
+                    
+
 :- menu.
