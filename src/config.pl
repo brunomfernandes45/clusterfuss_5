@@ -29,4 +29,23 @@ menu :-
         (Option = 5, !, halt)
     ).
 
+% get_names(-Player1, -Player2, +GameMode)
+% Asks the user for the players' names
+get_names(Player1, Player2, 1):-
+    write('Player 1 name: '), nl,
+    read(Player1),
+    write('Player 2 name: '), nl,
+    read(Player2).
+get_names(Player1, Player2, 2):-
+    write('Player name: '), nl,
+    read(Player1),
+    Player2 = 'Bot'.
+get_names(Player1, Player2, 3):-
+    write('Player name: '), nl,
+    read(Player2),
+    Player1 = 'Bot'.
+get_names(Player1, Player2, 4):-
+    Player1 = 'Bot1',
+    Player2 = 'Bot2'.
+
 :- menu.
