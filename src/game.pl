@@ -46,9 +46,14 @@ game(GameState, Gamemode):-
     display_winner(Winner).
 */
 game(GameState, 1):-
+    [Player | Board] = GameState,
     display_game(GameState),
-    repeat
-    get_move(Move),
-    %validate_move(GameState, Move), !,
+
+    repeat,  
+        get_move(Move),
+        get_move_indexes(Move, MoveIndexes),
+        valid_moves(GameState, Player, ListOfMoves),
+        member(MoveIndexes, ListOfMoves),!,
+    
     move(GameState, Move, NewGameState),
     game(NewGameState, 1).

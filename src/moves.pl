@@ -4,6 +4,7 @@
 % get_move(-Move)
 % Gets the move from the player
 get_move(Move) :-
+    repeat,
     write('Position of the piece you want to move: '),
     read(Start), nl,
     write('Position to where you want to move it: '),
@@ -24,24 +25,40 @@ set_piece(Board, Row-Col, NewPiece, NewBoard) :-
 
 % move_piece(+Board, +Move, -NewBoard)
 move_piece(Board, Start-Dest, NewBoard) :-
-    sub_atom(Start, 0, 1, _, Row),
-    sub_atom(Start, 1, 1, _, Col),
-    row(Row, RowIndex),
-    col(Col, ColIndex),
+    get_move_indexes(Start-Dest, [RowIndex, ColIndex, NewRowIndex, NewColIndex]),
     get_piece(Board, RowIndex-ColIndex, Piece),
-    sub_atom(Dest, 0, 1, _, NewRow),
-    sub_atom(Dest, 1, 1, _, NewCol),
-    row(NewRow, NewRowIndex),
-    col(NewCol, NewColIndex),
+    write('Piece: '), write(Piece), nl,
     set_piece(Board, NewRowIndex-NewColIndex, Piece, TempBoard),
-    set_piece(TempBoard, RowIndex-ColIndex, empty, NewBoard),
+    set_piece(TempBoard, RowIndex-ColIndex, empty, NewBoard).
 
 
 % move(+GameState, +Move, -NewGameState)
 % Moves a piece from one position to another, if possible
 move([Player|Board], Move, [NewPlayer|NewBoard]) :-
+    write('Moving piece...'), nl,
     move_piece(Board, Move, NewBoard),
-    switch_turn(Player,NewPlayer).
+    switch_turn(Player, NewPlayer).
 
 
+% valid_moves(+GameState, +Player, -ListOfMoves)
+% Gets the list of valid moves for the given player
+valid_moves(GameState, Player, ListOfMoves) :-
+    findall([RowSI, ColSI, RowDI, ColDI], get_valid_move(GameState, Player, [RowSI, ColSI, RowDI, ColDI]), ListOfMoves).
+
+% get_valid_move(+GameState, +Player, -Move)
+% Checks if a move is valid
+get_valid_move([Player | Board], Player, [RowSI, ColSI, RowDI, ColDI]) :-
+    valid_piece(Player, Piece),
+        switch_turn(Player, Opponent),
+    valid_piece(Opponent, OpponentPiece),
+    get_piece(Board, RowSI-ColSI, Piece),
+    (
+        get_piece(Board, RowDI-ColDI, OpponentPiece);
+        get_piece(Board, RowDI-ColDI, Piece)
+    ),
+    is_orthogonal(RowSI, ColSI, RowDI, ColDI).
+
+
+
+    
 

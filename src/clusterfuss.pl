@@ -11,4 +11,3 @@ play :- config(GameState),
 test :- config(GameState),
         game_mode(Mode),
         game(GameState, Mode).
-        
