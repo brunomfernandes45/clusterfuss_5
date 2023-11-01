@@ -34,7 +34,7 @@ switch_turn(player2, player1).
 
 % game_over(+GameState, -Winner)
 % Checks if the game is over and returns the winner
-%game_over(GameState, Winner):-
+% game_over(GameState, Winner):-
     
 
 /*
@@ -45,14 +45,11 @@ game(GameState, Gamemode):-
     display_winner(Winner).
 */
 game(GameState, 1):-
-    [Player | _] = GameState,
-    display_game(GameState),
+        [Player | _] = GameState,
+        display_game(GameState),
 
-    repeat,  
-        get_move(Move),
-        get_move_indexes(Move, MoveIndexes),
-        valid_moves(GameState, Player, ListOfMoves),
-        member(MoveIndexes, ListOfMoves),!,
-    
-    move(GameState, Move, NewGameState),
-    game(NewGameState, 1).
+        repeat,  
+            get_move(Move),
+            move(GameState, Move, NewGameState), !,
+            
+        game(NewGameState, 1).

@@ -8,6 +8,7 @@
 
 % play/0
 % Starts the game
-play :- config(GameState),
+play :- 
+        config(GameState),
         game_mode(Mode),
         game(GameState, Mode).
