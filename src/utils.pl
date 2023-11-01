@@ -99,4 +99,40 @@ is_orthogonal(Row1, Col1, Row2, Col2):-
         Col1 =:= Col2,
         N is Row1 - Row2,
         abs(N, 1).
-    
+
+% in_group_dfs(+Board, +Row1, +Col1, +Row2, +Col2, +Visited)
+% Checks if the two positions are in the same group.
+in_group_dfs(Board, Row1, Col1, Row1, Col1, _).
+in_group_dfs(Board, Row1, Col1, Row2, Col2, Visited):-
+        (
+            get_piece(Board, Row2-Col2, red);
+            get_piece(Board, Row2-Col2, blue)
+        ), 
+        \+ member(Row2-Col2, Visited),
+        is_orthogonal(Row1, Col1, Row2, Col2).
+in_group_dfs(Board, Row1, Col1, Row2, Col2, Visited):-
+        (
+            get_piece(Board, Row3-Col3, red);
+            get_piece(Board, Row3-Col3, blue)
+        ),
+        is_orthogonal(Row1, Col1, Row3, Col3),
+        \+ member(Row3-Col3, Visited),
+        Visited1 = [Row1-Col1 | Visited],
+        in_group_dfs(Board, Row3, Col3, Row2, Col2, Visited1). 
+
+% remove_separate_pieces_aux(+Board, +Group, +TempBoard, -NewBoard)
+% Auxiliary predicate for remove_separate_pieces/3.
+remove_separate_pieces_aux(_, [], TempBoard, NewBoard):- NewBoard = TempBoard.
+remove_separate_pieces_aux(Board, [RowIndex-ColIndex | T], TempBoard, NewBoard):-
+    get_piece(Board, RowIndex-ColIndex, Piece),
+    set_piece(TempBoard, RowIndex-ColIndex, Piece, NewBoard1),
+    remove_separate_pieces_aux(Board, T, NewBoard1, NewBoard).
+
+% remove_separate_pieces(+Board, +RowIndex-ColIndex, -NewBoard)
+% Unifies NewBoard with the board resulting from removing all the pieces that are not in the same group as the piece at RowIndex-ColIndex.
+remove_separate_pieces(Board, RowIndex-ColIndex, NewBoard):-
+    board_size(_Size),
+    empty_board(_Size, TempBoard),
+    setof(RowIndex1-ColIndex1,(Visited=[], in_group_dfs(Board, RowIndex, ColIndex, RowIndex1, ColIndex1, Visited)), Group),
+    remove_separate_pieces_aux(Board, Group, TempBoard,NewBoard).
+

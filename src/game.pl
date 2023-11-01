@@ -27,6 +27,32 @@ initial_state(8, [ player1,
     [blue, red, blue, red, blue, red, blue, red]
 ]).
 
+empty_board(4, [ 
+    [empty, empty, empty, empty],
+    [empty, empty, empty, empty],
+    [empty, empty, empty, empty],
+    [empty, empty, empty, empty]
+]).
+empty_board(6, [ 
+    [empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty]
+]).
+empty_board(8, [ 
+    [empty, empty, empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty, empty, empty],
+    [empty, empty, empty, empty, empty, empty, empty, empty]
+]).
+
+
 % switch_turn(+CurrentPlayer, -NextPlayer)
 % Switches the turn from one player to the other
 switch_turn(player1, player2).

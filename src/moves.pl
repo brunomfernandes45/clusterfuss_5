@@ -25,8 +25,9 @@ set_piece(Board, Row-Col, NewPiece, NewBoard) :-
 move_piece(Board, Start-Dest, NewBoard) :-
         get_move_indexes(Start-Dest, [RowIndex, ColIndex, NewRowIndex, NewColIndex]),
         get_piece(Board, RowIndex-ColIndex, Piece),
-        set_piece(Board, NewRowIndex-NewColIndex, Piece, TempBoard),
-        set_piece(TempBoard, RowIndex-ColIndex, empty, NewBoard).
+        set_piece(Board, NewRowIndex-NewColIndex, Piece, TempBoard1),
+        set_piece(TempBoard1, RowIndex-ColIndex, empty, TempBoard2),
+        remove_separate_pieces(TempBoard2, NewRowIndex-NewColIndex, NewBoard).
 
 % move(+GameState, +Move, -NewGameState)
 % Moves a piece from one position to another, if possible
@@ -35,7 +36,9 @@ move(GameState, Move, [NewPlayer | NewBoard]) :-
         get_move_indexes(Move, MoveIndexes),
         valid_moves(GameState, Player, ListOfMoves),
         member(MoveIndexes, ListOfMoves),
-        move_piece(Board, Move, NewBoard),
+        move_piece(Board, Move, TempBoard),
+        MoveIndexes = [RowIndex, ColIndex, NewRowIndex, NewColIndex],
+        remove_separate_pieces(TempBoard, NewRowIndex-NewColIndex, NewBoard),
         switch_turn(Player, NewPlayer).
 
 
