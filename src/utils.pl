@@ -1,5 +1,3 @@
-:- use_module(library(between)).
-
 % not(+Goal)
 % Fails if Goal succeeds.
 not(Goal) :- call(Goal), !, fail.
@@ -20,8 +18,9 @@ read_number_aux(Number, Acc):-
 read_number_aux(Number, Number).
 
 % replace(+List, +Index, +Element, -NewList)
-replace([_|T], 0, X, [X|T]).
-replace([H|T], N, X, [H|R]) :-
+% Unifies NewList with the list resulting from replacing the element at Index with Element.
+replace([_ | T], 0, X, [X | T]).
+replace([H | T], N, X, [H | R]) :-
     N > 0,
     N1 is N - 1,
     replace(T, N1, X, R).
@@ -63,6 +62,8 @@ row('F', 5).
 row('G', 6).
 row('H', 7).
 
+% get_move_indexes(+Move, -IndexesList)
+% Unifies IndexesList with the list of indexes corresponding to Move.
 get_move_indexes(Start-Dest, [RowIndex, ColIndex, NewRowIndex, NewColIndex]):-
     sub_atom(Start, 0, 1, _, Row),
     sub_atom(Start, 1, 1, _, Col),
@@ -73,7 +74,7 @@ get_move_indexes(Start-Dest, [RowIndex, ColIndex, NewRowIndex, NewColIndex]):-
     row(NewRow, NewRowIndex),
     col(NewCol, NewColIndex).
 
-% abs(+Number,-AbsNumber)
+% abs(+Number, -AbsNumber)
 % Unifies AbsNumber with the absolute value of Number
 abs(X, Y) :-
     X >= 0,
@@ -81,8 +82,8 @@ abs(X, Y) :-
 abs(X, Y) :-
     Y is -X.
 
-% valid_piece(+Player, +Piece)
-% Checks if Piece belongs to Player.
+% valid_piece(+Player, ?Piece)
+% Checks if Piece belongs to Player or unifies Piece with the piece corresponding to Player.
 valid_piece(player1, 'red').
 valid_piece(player2, 'blue').
 

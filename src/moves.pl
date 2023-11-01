@@ -1,5 +1,3 @@
-:- use_module(library(lists)).
-
 % get_move(-Move)
 % Gets the move from the player
 get_move(Move) :-
