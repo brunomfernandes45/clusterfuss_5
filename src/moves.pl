@@ -1,4 +1,3 @@
-:- consult(display).
 :- use_module(library(lists)).
 
 % get_move(-Move)
@@ -35,7 +34,6 @@ move_piece(Board, Start-Dest, NewBoard) :-
 % move(+GameState, +Move, -NewGameState)
 % Moves a piece from one position to another, if possible
 move([Player|Board], Move, [NewPlayer|NewBoard]) :-
-    write('Moving piece...'), nl,
     move_piece(Board, Move, NewBoard),
     switch_turn(Player, NewPlayer).
 

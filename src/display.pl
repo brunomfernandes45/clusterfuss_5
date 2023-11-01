@@ -1,6 +1,3 @@
-:- consult(game).
-:- consult(config).
-
 % display_column_positions(+Size)
 % displays the column positions of the board
 display_column_positions(0) :- nl.

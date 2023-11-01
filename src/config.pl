@@ -1,4 +1,3 @@
-:- consult(utils).
 :- dynamic board_size/1.
 :- dynamic game_mode/1.
 :- dynamic player_name/2.
@@ -33,7 +32,7 @@ menu :-
         (Option = 5, !, halt)
     ),
     asserta(game_mode(Option)),
-    read_names(Player1, Player2, Option).
+    read_names(_Player1, _Player2, Option).
     
 
 % config(-GameState)

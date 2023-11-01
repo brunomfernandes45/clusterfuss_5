@@ -1,6 +1,8 @@
 :- consult(config).
 :- consult(game).
 :- consult(moves).
+:- consult(display).
+:- consult(utils).
 
 % play/0
 % Starts the game

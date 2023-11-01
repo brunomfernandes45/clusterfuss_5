@@ -54,14 +54,14 @@ row('e', 4).
 row('f', 5).
 row('g', 6).
 row('h', 7).
-/*row('A', 0).
+row('A', 0).
 row('B', 1).
 row('C', 2).
 row('D', 3).
 row('E', 4).
 row('F', 5).
 row('G', 6).
-row('H', 7). */
+row('H', 7).
 
 get_move_indexes(Start-Dest, [RowIndex, ColIndex, NewRowIndex, NewColIndex]):-
     sub_atom(Start, 0, 1, _, Row),
@@ -91,9 +91,9 @@ valid_piece(player2, 'blue').
 is_orthogonal(Row1, Col1, Row2, Col2):-
     Row1 =:= Row2,
     N is Col1 - Col2,
-    abs(N, 1),
+    abs(N, 1).
 is_orthogonal(Row1, Col1, Row2, Col2):-
     Col1 =:= Col2,
     N is Row1 - Row2,
-    abs(N, 1),
+    abs(N, 1).
     

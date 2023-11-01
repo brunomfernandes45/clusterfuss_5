@@ -1,4 +1,3 @@
-
 % initial_state(+Size, -GameState)
 % Returns a initial_state of a given size
 initial_state(4, [ player1, 
@@ -46,7 +45,7 @@ game(GameState, Gamemode):-
     display_winner(Winner).
 */
 game(GameState, 1):-
-    [Player | Board] = GameState,
+    [Player | _] = GameState,
     display_game(GameState),
 
     repeat,  
