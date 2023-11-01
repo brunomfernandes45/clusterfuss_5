@@ -45,11 +45,10 @@ game(GameState, Gamemode):-
     display_winner(Winner).
 */
 game(GameState, 1):-
-        [Player | _] = GameState,
         display_game(GameState),
 
         repeat,  
             get_move(Move),
             move(GameState, Move, NewGameState), !,
-            
+
         game(NewGameState, 1).

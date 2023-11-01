@@ -28,10 +28,10 @@ move_piece(Board, Start-Dest, NewBoard) :-
         set_piece(Board, NewRowIndex-NewColIndex, Piece, TempBoard),
         set_piece(TempBoard, RowIndex-ColIndex, empty, NewBoard).
 
-
 % move(+GameState, +Move, -NewGameState)
 % Moves a piece from one position to another, if possible
-move([Player | Board], Move, [NewPlayer | NewBoard]) :-
+move(GameState, Move, [NewPlayer | NewBoard]) :-
+        GameState = [Player | Board],
         get_move_indexes(Move, MoveIndexes),
         valid_moves(GameState, Player, ListOfMoves),
         member(MoveIndexes, ListOfMoves),
