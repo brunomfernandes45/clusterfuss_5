@@ -27,9 +27,9 @@ menu :-
         member(Option, [1, 2, 3, 4, 5, 6]),
         (
             (Option = 1, !, choose_board(Size));
-            (Option = 2, !, choose_board(Size));
-            (Option = 3, !, choose_board(Size));
-            (Option = 4, !, choose_board(Size));
+            (Option = 2, !, choose_board(Size), get_level(player2, Level), asserta(level(player2, Level)));
+            (Option = 3, !, choose_board(Size), get_level(player1, Level), asserta(level(player1, Level)));
+            (Option = 4, !, choose_board(Size), get_level(player1, Level1), asserta(level(player1, Level1)), get_level(player2, Level2), asserta(level(player2, Level2)));
             (Option = 5, instructions, fail);
             (Option = 6, !, halt)
         ), !,
@@ -86,3 +86,11 @@ instructions :-
         write('Lets have some fun with Clusterfuss!'), nl, nl,
         write('(Write anything to return to the menu)'), nl,
         read(_).
+
+get_level(Player, Level):-
+        write('Choose a level for '), write(Player), write(':'), nl,
+        write('1. Random Move'), nl,
+        write('2. Best Move (Greedy)'), nl,
+        repeat,
+                read_number(Level),
+                member(Level, [1, 2]), !.

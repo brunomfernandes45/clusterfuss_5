@@ -93,7 +93,7 @@ game(GameState, 2) :-
         );
         (   
             Player = player2,
-            get_level(Player,Level),
+            level(Player,Level),
             choose_move(GameState, Player, Level, Move),
             move(GameState, Move, NewGameState)
         )
@@ -112,7 +112,7 @@ game(GameState, 3) :-
         );
         (   
             Player = player1,
-            get_level(Player,Level),
+            level(Player,Level),
             choose_move(GameState, Player, Level, Move),
             move(GameState, Move, NewGameState)
         )
@@ -122,7 +122,7 @@ game(GameState, 3) :-
 game(GameState, 4):-
     display_game(GameState),
     GameState = [Player | _ ],
-    get_level(Player,Level),
+    level(Player,Level),
     choose_move(GameState, Player, Level, Move),
     move(GameState, Move, NewGameState),
     game(NewGameState, 4).
