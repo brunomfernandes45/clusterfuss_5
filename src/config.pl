@@ -1,6 +1,7 @@
 :- dynamic board_size/1.
 :- dynamic game_mode/1.
 :- dynamic player_name/2.
+:- dynamic level/2.
 
 % choose_board(-Size)
 % Size is the size of the board chosen by the user
@@ -21,7 +22,7 @@ menu :-
         write('2. Player vs Computer'), nl,
         write('3. Computer vs Player'), nl,
         write('4. Computer vs Computer'), nl,
-        write('5. Intructions'), nl,
+        write('5. Instructions'), nl,
         write('6. Exit'), nl,
         read_number(Option),
         member(Option, [1, 2, 3, 4, 5, 6]),
@@ -30,7 +31,7 @@ menu :-
             (Option = 2, !, choose_board(Size), get_level(player2, Level), asserta(level(player2, Level)));
             (Option = 3, !, choose_board(Size), get_level(player1, Level), asserta(level(player1, Level)));
             (Option = 4, !, choose_board(Size), get_level(player1, Level1), asserta(level(player1, Level1)), get_level(player2, Level2), asserta(level(player2, Level2)));
-            (Option = 5, instructions, fail);
+            (Option = 5, nl, instructions, fail);
             (Option = 6, !, halt)
         ), !,
         asserta(game_mode(Option)),

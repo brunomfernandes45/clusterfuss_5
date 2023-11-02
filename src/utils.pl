@@ -349,7 +349,6 @@ remove_separate_pieces(Board, RowIndex-ColIndex, NewBoard):-
     board_size(_Size),
     empty_board(_Size, TempBoard),
     setof(RowIndex1-ColIndex1,(Visited = [], in_group_dfs(Board, RowIndex, ColIndex, RowIndex1, ColIndex1, Visited)), Group),
-    % in_group_dfs(Board, RowIndex, ColIndex, [], Group),
     remove_separate_pieces_aux(Board, Group, TempBoard, NewBoard).
 
 % piece_count(+Board, +Piece, -Count)

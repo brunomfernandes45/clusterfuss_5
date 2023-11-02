@@ -55,29 +55,31 @@ valid_move(GameState, [RowIndex, ColIndex, NewRowIndex, NewColIndex], NewGameSta
 % valid_moves(+GameState, +Player, -ListOfMoves)
 % Gets the list of valid moves for the given player
 valid_moves(GameState, Player, ListOfMoves) :-
+        GameState = [ _ | Board],
         findall([RowSI, ColSI, RowDI, ColDI], 
-        get_valid_move(GameState, Player, [RowSI, ColSI, RowDI, ColDI]), ListOfMoves).
+        get_valid_move(Board, Player, [RowSI, ColSI, RowDI, ColDI]), ListOfMoves).
 
 % get_valid_move(+GameState, +Player, -Move)
 % Checks if a move is valid
-get_valid_move([Player | Board], Player, [RowSI, ColSI, RowDI, ColDI]) :-
-        valid_piece(Player, Piece),
-        switch_turn(Player, Opponent),
-        valid_piece(Opponent, OpponentPiece),
-        get_piece(Board, RowSI-ColSI, Piece),
+get_valid_move(Board, Player, [RowSI, ColSI, RowDI, ColDI]) :-
         is_connected(RowSI, ColSI, RowDI, ColDI),
-        (
-            get_piece(Board, RowDI-ColDI, OpponentPiece);
-            get_piece(Board, RowDI-ColDI, Piece)
-        ),
-        piece_count(Board, Player, Count1),
-        get_piece(Board, RowSI-ColSI, NPiece),
-        set_piece(Board, RowDI-ColDI, NPiece, TempBoard1),
+        get_piece(Board, RowDI-ColDI, P),
+        member(P, [red, blue]),
+        valid_piece(Player, Piece),
+        piece_count(Board, Piece, Count1),
+        get_piece(Board, RowSI-ColSI, Piece),
+        set_piece(Board, RowDI-ColDI, Piece, TempBoard1),
         set_piece(TempBoard1, RowSI-ColSI, empty, TempBoard2),
         remove_separate_pieces(TempBoard2, RowDI-ColDI, TempBoard),
-        piece_count(TempBoard, Player, Count2),
+        piece_count(TempBoard, Piece, Count2),
         Count1 =:= Count2.
 
+% choose_move(+GameState, +Player, +Level, -Move)
+% Chooses a move for the given player
+choose_move(GameState, Player, 1, Move) :-
+        valid_moves(GameState, Player, ListOfMoves),
+        write('Possible moves: '), write(ListOfMoves), nl,
+        random_member(Move, ListOfMoves).
 
 
     
