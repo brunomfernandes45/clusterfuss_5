@@ -29,9 +29,38 @@ move_piece(Board, [RowIndex, ColIndex, NewRowIndex, NewColIndex], NewBoard) :-
 
 % move(+GameState, +Move, -NewGameState)
 % Moves a piece from one position to another, if possible
-move(GameState, Move, NewGameState) :-
-        get_move_indexes(Move, MoveIndexes),
-        valid_move(GameState, MoveIndexes, NewGameState).
+move(GameState, Move, [NewPlayer | NewBoard]) :-
+        GameState = [Player | Board],
+        game_mode(GameMode),
+        (
+                (GameMode = 1);
+                (GameMode = 2, Player = player1);
+                (GameMode = 3, Player = player2)
+        ),
+        valid_moves(GameState, Player, ListOfMoves), 
+        get_move_indexes(Move, [RowIndex, ColIndex, NewRowIndex, NewColIndex]),
+        member([RowIndex, ColIndex, NewRowIndex, NewColIndex, NewBoard], ListOfMoves),
+        switch_turn(Player, NewPlayer).
+
+move(GameState, Move, [NewPlayer | NewBoard]) :-
+        GameState = [Player | Board],
+        game_mode(GameMode),
+        (
+                (GameMode = 2, Player = player2);
+                (GameMode = 3, Player = player1);
+                (GameMode = 4)
+        ),
+        level(Player, Level),
+        choose_move(GameState, Player, Level, [RowIndex, ColIndex, NewRowIndex, NewColIndex, NewBoard]),
+        switch_turn(Player, NewPlayer),
+        player_name(Player, PlayerName),
+        row(Row, RowIndex),
+        col(Col, ColIndex),
+        row(NewRow, NewRowIndex),
+        col(NewCol, NewColIndex),
+        format("~w chose the move ~w~w-~w~w.~n",[PlayerName, Row, Col, NewRow, NewCol]).
+
+
 
 % valid_move(+GameState, +MoveIndexes, -NewGameState)
 % Checks if a move is valid, and if it is, returns the new game state
@@ -56,12 +85,12 @@ valid_move(GameState, [RowIndex, ColIndex, NewRowIndex, NewColIndex], NewGameSta
 % Gets the list of valid moves for the given player
 valid_moves(GameState, Player, ListOfMoves) :-
         GameState = [ _ | Board],
-        findall([RowSI, ColSI, RowDI, ColDI], 
-        get_valid_move(Board, Player, [RowSI, ColSI, RowDI, ColDI]), ListOfMoves).
+        findall([RowSI, ColSI, RowDI, ColDI, NewBoard], 
+        get_valid_move(Board, Player, [RowSI, ColSI, RowDI, ColDI], NewBoard), ListOfMoves).
 
 % get_valid_move(+GameState, +Player, -Move)
 % Checks if a move is valid
-get_valid_move(Board, Player, [RowSI, ColSI, RowDI, ColDI]) :-
+get_valid_move(Board, Player, [RowSI, ColSI, RowDI, ColDI], NewBoard) :-
         is_connected(RowSI, ColSI, RowDI, ColDI),
         get_piece(Board, RowDI-ColDI, P),
         member(P, [red, blue]),
@@ -70,15 +99,14 @@ get_valid_move(Board, Player, [RowSI, ColSI, RowDI, ColDI]) :-
         get_piece(Board, RowSI-ColSI, Piece),
         set_piece(Board, RowDI-ColDI, Piece, TempBoard1),
         set_piece(TempBoard1, RowSI-ColSI, empty, TempBoard2),
-        remove_separate_pieces(TempBoard2, RowDI-ColDI, TempBoard),
-        piece_count(TempBoard, Piece, Count2),
+        remove_separate_pieces(TempBoard2, RowDI-ColDI, NewBoard),
+        piece_count(NewBoard, Piece, Count2),
         Count1 =:= Count2.
 
 % choose_move(+GameState, +Player, +Level, -Move)
 % Chooses a move for the given player
 choose_move(GameState, Player, 1, Move) :-
         valid_moves(GameState, Player, ListOfMoves),
-        write('Possible moves: '), write(ListOfMoves), nl,
         random_member(Move, ListOfMoves).
 
 

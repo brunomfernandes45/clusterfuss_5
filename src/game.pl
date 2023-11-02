@@ -70,20 +70,20 @@ game(GameState, _) :-
     game_over(GameState, Winner),
     !,
     board_size(_Size),
-    GameState = [_ | Board],
+    GameState = [ _ | Board],
     display_board(_Size, Board),
     display_winner(Winner).
 
 game(GameState, 1) :-
     display_game(GameState),
-    repeat,  
+    repeat,
         get_move(Move),
         move(GameState, Move, NewGameState), !,
     game(NewGameState, 1).
 
 game(GameState, 2) :-
     display_game(GameState),
-    GameState = [Player | _Board],
+    GameState = [Player | Board],
     (
         (   
             Player = player1,
@@ -94,7 +94,8 @@ game(GameState, 2) :-
         (   
             Player = player2,
             level(Player,Level),
-            choose_move(GameState, Player, Level, Move),
+            write('Write anything to let the Bot play'),nl,
+            read( _ ),
             move(GameState, Move, NewGameState)
         )
     ),
@@ -102,7 +103,7 @@ game(GameState, 2) :-
 
 game(GameState, 3) :-
     display_game(GameState),
-    GameState = [Player | _ ],
+    GameState = [Player | Board ],
     (
         (   
             Player = player2,
@@ -113,16 +114,18 @@ game(GameState, 3) :-
         (   
             Player = player1,
             level(Player,Level),
-            choose_move(GameState, Player, Level, Move),
-            move(GameState, Move, NewGameState)
+            write('Write anything to let the Bot play'),nl,
+            read( _ ),
+            move(GameState, Move, NewGameState)               
         )
     ),
     game(NewGameState, 3).
 
 game(GameState, 4):-
     display_game(GameState),
-    GameState = [Player | _ ],
+    GameState = [Player | Board ],
     level(Player,Level),
-    choose_move(GameState, Player, Level, Move),
+    write('Write anything to let the Bot play'),nl,
+    read( _ ),
     move(GameState, Move, NewGameState),
     game(NewGameState, 4).
