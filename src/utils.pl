@@ -100,6 +100,7 @@ is_orthogonal(Row1, Col1, Row2, Col2):-
         N is Row1 - Row2,
         abs(N, 1).
 
+/*
 % in_group_dfs(+Board, +Row1, +Col1, +Row2, +Col2, +Visited)
 % Checks if the two positions are in the same group.
 in_group_dfs(Board, Row1, Col1, Row1, Col1, _).
@@ -119,10 +120,30 @@ in_group_dfs(Board, Row1, Col1, Row2, Col2, Visited):-
         \+ member(Row3-Col3, Visited),
         Visited1 = [Row1-Col1 | Visited],
         in_group_dfs(Board, Row3, Col3, Row2, Col2, Visited1). 
+*/
+
+in_group_dfs(Board, Row, Col, Visited, Group ) :- member(Row-Col, Visited).
+in_group_dfs(Board , Row, Col,  Visited , Group) :- board_size(_Size), (Row < 0; Col < 0; Row >= _Size; Col >= _Size).
+in_group_dfs(Board, Row, Col, Visited , Group ) :- get_piece(Board, Row-Col, empty). 
+in_group_dfs(Board, Row, Col, Visited, Group) :-
+        \+ member(Row-Col, Visited),
+        Visited1 = [Row-Col | Visited],
+        write(Visited1), nl,
+        RowT is Row - 1, in_group_dfs(Board, RowT, Col, Visited1, Group),
+        RowB is Row + 1, in_group_dfs(Board, RowB, Col, Visited1, Group),
+        ColL is Col - 1, in_group_dfs(Board, Row, ColL, Visited1, Group),
+        ColR is Col + 1, in_group_dfs(Board, Row, ColR, Visited1, Group),
+        write(Row-Col), nl,
+        Visited = Visited1,
+        Group = [Row-Col | Group].
+    
+
+    
+    
 
 % remove_separate_pieces_aux(+Board, +Group, +TempBoard, -NewBoard)
 % Auxiliary predicate for remove_separate_pieces/3.
-remove_separate_pieces_aux(_, [], TempBoard, NewBoard):- NewBoard = TempBoard.
+remove_separate_pieces_aux(_, [], NewBoard, NewBoard).
 remove_separate_pieces_aux(Board, [RowIndex-ColIndex | T], TempBoard, NewBoard):-
     get_piece(Board, RowIndex-ColIndex, Piece),
     set_piece(TempBoard, RowIndex-ColIndex, Piece, NewBoard1),
@@ -133,6 +154,17 @@ remove_separate_pieces_aux(Board, [RowIndex-ColIndex | T], TempBoard, NewBoard):
 remove_separate_pieces(Board, RowIndex-ColIndex, NewBoard):-
     board_size(_Size),
     empty_board(_Size, TempBoard),
-    setof(RowIndex1-ColIndex1,(Visited=[], in_group_dfs(Board, RowIndex, ColIndex, RowIndex1, ColIndex1, Visited)), Group),
-    remove_separate_pieces_aux(Board, Group, TempBoard,NewBoard).
+    write('Group: '), nl,
+    % setof(RowIndex1-ColIndex1,(Visited = [], in_group_dfs(Board, RowIndex, ColIndex, RowIndex1, ColIndex1, Visited)), Group),
+    in_group_dfs(Board, RowIndex, ColIndex, [], Group),
+    write(Group), nl,
+    remove_separate_pieces_aux(Board, Group, TempBoard, NewBoard).
 
+% piece_count(+Board, +Piece, -Count)
+% Unifies Count with the number of pieces of type Piece in Board.
+piece_count(Board, Piece, Count) :-
+    ( setof(RowIndex-ColIndex, get_piece(Board, RowIndex-ColIndex, Piece), List) -> 
+        true 
+    ; List = [] ),
+    length(List, Count).
+    
