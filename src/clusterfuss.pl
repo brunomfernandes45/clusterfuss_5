@@ -13,11 +13,4 @@ play :-
         game_mode(Mode),
         game(GameState, Mode).
 
-test :- 
-        asserta(board_size(4)),
-        Board = [[empty, red, red, red],
-                 [red, red, red, blue],
-                 [red, red, empty, empty],
-                 [red, blue, blue, red]],
-        piece_count(Board, player1, Count),
-        write(Count), nl.
+test :- true.

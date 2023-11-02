@@ -1,9 +1,3 @@
-% not(+Goal)
-% Fails if Goal succeeds.
-not(Goal) :- 
-        call(Goal), 
-        !, fail.
-not(_).
 
 % read_number(-Number)
 % Unifies Number with the number read from the input stream.
@@ -64,6 +58,236 @@ row('F', 5).
 row('G', 6).
 row('H', 7).
 
+% is_connected(+Row1, +Col1, +Row2, +Col2)
+% Checks if the two positions are connected.
+is_connected(0, 0, 0, 1).
+is_connected(0, 0, 1, 0).
+is_connected(0, 1, 0, 0).
+is_connected(0, 1, 0, 2).
+is_connected(0, 1, 1, 1).
+is_connected(0, 2, 0, 1).
+is_connected(0, 2, 1, 2).
+is_connected(0, 2, 0, 3).
+is_connected(0, 3, 0, 2).
+is_connected(0, 3, 1, 3).
+is_connected(0, 3, 0, 4).
+is_connected(0, 4, 0, 3).
+is_connected(0, 4, 1, 4).
+is_connected(0, 4, 0, 5).
+is_connected(0, 5, 0, 4).
+is_connected(0, 5, 1, 5).
+is_connected(0, 5, 0, 6).
+is_connected(0, 6, 0, 5).
+is_connected(0, 6, 1, 6).
+is_connected(0, 6, 0, 7).
+is_connected(0, 7, 0, 6).
+is_connected(0, 7, 1, 7).
+is_connected(1, 0, 0, 1).
+is_connected(1, 0, 0, 0).
+is_connected(1, 0, 1, 1).
+is_connected(1, 0, 2, 0).
+is_connected(1, 1, 1, 0).
+is_connected(1, 1, 1, 2).
+is_connected(1, 1, 2, 1).
+is_connected(1, 1, 0, 1).
+is_connected(1, 2, 0, 2).
+is_connected(1, 2, 1, 1).
+is_connected(1, 2, 1, 3).
+is_connected(1, 2, 2, 2).
+is_connected(1, 3, 1, 2).
+is_connected(1, 3, 2, 3).
+is_connected(1, 3, 0, 3).
+is_connected(1, 3, 1, 4).
+is_connected(1, 4, 1, 3).
+is_connected(1, 4, 2, 4).
+is_connected(1, 4, 0, 4).
+is_connected(1, 4, 1, 5).
+is_connected(1, 5, 1, 4).
+is_connected(1, 5, 2, 5).
+is_connected(1, 5, 0, 5).
+is_connected(1, 5, 1, 6).
+is_connected(1, 6, 1, 5).
+is_connected(1, 6, 2, 6).
+is_connected(1, 6, 0, 6).
+is_connected(1, 6, 1, 7).
+is_connected(1, 7, 1, 6).
+is_connected(1, 7, 2, 7).
+is_connected(1, 7, 0, 7).
+is_connected(2, 0, 1, 0).
+is_connected(2, 0, 2, 1).
+is_connected(2, 0, 3, 0).
+is_connected(2, 1, 2, 0).
+is_connected(2, 1, 2, 2).
+is_connected(2, 1, 3, 1).
+is_connected(2, 1, 1, 1).
+is_connected(2, 2, 1, 2).
+is_connected(2, 2, 2, 1).
+is_connected(2, 2, 2, 3).
+is_connected(2, 2, 3, 2).
+is_connected(2, 3, 2, 2).
+is_connected(2, 3, 3, 3).
+is_connected(2, 3, 1, 3).
+is_connected(2, 3, 2, 4).
+is_connected(2, 4, 2, 3).
+is_connected(2, 4, 3, 4).
+is_connected(2, 4, 1, 4).
+is_connected(2, 4, 2, 5).
+is_connected(2, 5, 2, 4).
+is_connected(2, 5, 3, 5).
+is_connected(2, 5, 1, 5).
+is_connected(2, 5, 2, 6).
+is_connected(2, 6, 2, 5).
+is_connected(2, 6, 3, 6).
+is_connected(2, 6, 1, 6).
+is_connected(2, 6, 2, 7).
+is_connected(2, 7, 2, 6).
+is_connected(2, 7, 3, 7).
+is_connected(2, 7, 1, 7).
+is_connected(3, 0, 2, 0).
+is_connected(3, 0, 3, 1).
+is_connected(3, 0, 4, 0).
+is_connected(3, 1, 2, 1).
+is_connected(3, 1, 3, 0).
+is_connected(3, 1, 3, 2).
+is_connected(3, 1, 4, 1).
+is_connected(3, 2, 3, 1).
+is_connected(3, 2, 2, 2).
+is_connected(3, 2, 3, 3).
+is_connected(3, 2, 4, 2).
+is_connected(3, 3, 2, 3).
+is_connected(3, 3, 3, 2).
+is_connected(3, 3, 3, 4).
+is_connected(3, 3, 4, 3).
+is_connected(3, 4, 3, 3).
+is_connected(3, 4, 2, 4).
+is_connected(3, 4, 3, 5).
+is_connected(3, 4, 4, 4).
+is_connected(3, 5, 3, 4).
+is_connected(3, 5, 2, 5).
+is_connected(3, 5, 3, 6).
+is_connected(3, 5, 4, 5).
+is_connected(3, 6, 3, 5).
+is_connected(3, 6, 2, 6).
+is_connected(3, 6, 3, 7).
+is_connected(3, 6, 4, 6).
+is_connected(3, 7, 3, 6).
+is_connected(3, 7, 2, 7).
+is_connected(3, 7, 4, 7).
+is_connected(4, 0, 3, 0).
+is_connected(4, 0, 4, 1).
+is_connected(4, 0, 5, 0).
+is_connected(4, 1, 3, 1).
+is_connected(4, 1, 4, 0).
+is_connected(4, 1, 4, 2).
+is_connected(4, 1, 5, 1).
+is_connected(4, 2, 4, 1).
+is_connected(4, 2, 3, 2).
+is_connected(4, 2, 4, 3).
+is_connected(4, 2, 5, 2).
+is_connected(4, 3, 3, 3).
+is_connected(4, 3, 4, 2).
+is_connected(4, 3, 4, 4).
+is_connected(4, 3, 5, 3).
+is_connected(4, 4, 4, 3).
+is_connected(4, 4, 3, 4).
+is_connected(4, 4, 4, 5).
+is_connected(4, 4, 5, 4).
+is_connected(4, 5, 4, 4).
+is_connected(4, 5, 3, 5).
+is_connected(4, 5, 4, 6).
+is_connected(4, 5, 5, 5).
+is_connected(4, 6, 4, 5).
+is_connected(4, 6, 3, 6).
+is_connected(4, 6, 4, 7).
+is_connected(4, 6, 5, 6).
+is_connected(4, 7, 4, 6).
+is_connected(4, 7, 3, 7).
+is_connected(4, 7, 5, 7).
+is_connected(5, 0, 4, 0).
+is_connected(5, 0, 5, 1).
+is_connected(5, 0, 6, 0).
+is_connected(5, 1, 4, 1).
+is_connected(5, 1, 5, 0).
+is_connected(5, 1, 5, 2).
+is_connected(5, 1, 6, 1).
+is_connected(5, 2, 5, 1).
+is_connected(5, 2, 4, 2).
+is_connected(5, 2, 5, 3).
+is_connected(5, 2, 6, 2).
+is_connected(5, 3, 4, 3).
+is_connected(5, 3, 5, 2).
+is_connected(5, 3, 5, 4).
+is_connected(5, 3, 6, 3).
+is_connected(5, 4, 5, 3).
+is_connected(5, 4, 4, 4).
+is_connected(5, 4, 5, 5).
+is_connected(5, 4, 6, 4).
+is_connected(5, 5, 5, 4).
+is_connected(5, 5, 4, 5).
+is_connected(5, 5, 5, 6).
+is_connected(5, 5, 6, 5).
+is_connected(5, 6, 5, 5).
+is_connected(5, 6, 4, 6).
+is_connected(5, 6, 5, 7).
+is_connected(5, 6, 6, 6).
+is_connected(5, 7, 5, 6).
+is_connected(5, 7, 4, 7).
+is_connected(5, 7, 6, 7).
+is_connected(6, 0, 5, 0).
+is_connected(6, 0, 6, 1).
+is_connected(6, 0, 7, 0).
+is_connected(6, 1, 5, 1).
+is_connected(6, 1, 6, 0).
+is_connected(6, 1, 6, 2).
+is_connected(6, 1, 7, 1).
+is_connected(6, 2, 6, 1).
+is_connected(6, 2, 5, 2).
+is_connected(6, 2, 6, 3).
+is_connected(6, 2, 7, 2).
+is_connected(6, 3, 5, 3).
+is_connected(6, 3, 6, 2).
+is_connected(6, 3, 6, 4).
+is_connected(6, 3, 7, 3).
+is_connected(6, 4, 6, 3).
+is_connected(6, 4, 5, 4).
+is_connected(6, 4, 6, 5).
+is_connected(6, 4, 7, 4).
+is_connected(6, 5, 6, 4).
+is_connected(6, 5, 5, 5).
+is_connected(6, 5, 6, 6).
+is_connected(6, 5, 7, 5).
+is_connected(6, 6, 6, 5).
+is_connected(6, 6, 5, 6).
+is_connected(6, 6, 6, 7).
+is_connected(6, 6, 7, 6).
+is_connected(6, 7, 6, 6).
+is_connected(6, 7, 5, 7).
+is_connected(6, 7, 7, 7).
+is_connected(7, 0, 6, 0).
+is_connected(7, 0, 7, 1).
+is_connected(7, 1, 6, 1).
+is_connected(7, 1, 7, 0).
+is_connected(7, 1, 7, 2).
+is_connected(7, 2, 7, 1).
+is_connected(7, 2, 6, 2).
+is_connected(7, 2, 7, 3).
+is_connected(7, 3, 6, 3).
+is_connected(7, 3, 7, 2).
+is_connected(7, 3, 7, 4).
+is_connected(7, 4, 7, 3).
+is_connected(7, 4, 6, 4).
+is_connected(7, 4, 7, 5).
+is_connected(7, 5, 7, 4).
+is_connected(7, 5, 6, 5).
+is_connected(7, 5, 7, 6).
+is_connected(7, 6, 7, 5).
+is_connected(7, 6, 6, 6).
+is_connected(7, 6, 7, 7).
+is_connected(7, 7, 7, 6).
+is_connected(7, 7, 6, 7).
+
+
+
 % get_move_indexes(+Move, -IndexesList)
 % Unifies IndexesList with the list of indexes corresponding to Move.
 get_move_indexes(Start-Dest, [RowIndex, ColIndex, NewRowIndex, NewColIndex]):-
@@ -89,57 +313,27 @@ abs(X, Y) :-
 valid_piece(player1, 'red').
 valid_piece(player2, 'blue').
 
-% is_orthogonal(+Row1, +Col1, +Row2, +Col2)
-% Checks if the two positions are orthogonal.
-is_orthogonal(Row1, Col1, Row2, Col2):-
-        Row1 =:= Row2,
-        N is Col1 - Col2,
-        abs(N, 1).
-is_orthogonal(Row1, Col1, Row2, Col2):-
-        Col1 =:= Col2,
-        N is Row1 - Row2,
-        abs(N, 1).
 
-/*
 % in_group_dfs(+Board, +Row1, +Col1, +Row2, +Col2, +Visited)
 % Checks if the two positions are in the same group.
-in_group_dfs(Board, Row1, Col1, Row1, Col1, _).
-in_group_dfs(Board, Row1, Col1, Row2, Col2, Visited):-
+in_group_dfs( _ , Row1, Col1, Row1, Col1, _ ).
+in_group_dfs( Board , Row1, Col1, Row2, Col2, Visited):-
+        is_connected(Row1, Col1, Row2, Col2),
+        \+ member(Row2-Col2, Visited),
         (
             get_piece(Board, Row2-Col2, red);
             get_piece(Board, Row2-Col2, blue)
-        ), 
-        \+ member(Row2-Col2, Visited),
-        is_orthogonal(Row1, Col1, Row2, Col2).
+        ).
 in_group_dfs(Board, Row1, Col1, Row2, Col2, Visited):-
+        is_connected(Row1, Col1, Row3, Col3),
+        \+ member(Row3-Col3, Visited),
         (
             get_piece(Board, Row3-Col3, red);
             get_piece(Board, Row3-Col3, blue)
         ),
-        is_orthogonal(Row1, Col1, Row3, Col3),
-        \+ member(Row3-Col3, Visited),
         Visited1 = [Row1-Col1 | Visited],
         in_group_dfs(Board, Row3, Col3, Row2, Col2, Visited1). 
-*/
 
-in_group_dfs(Board, Row, Col, Visited, Group ) :- member(Row-Col, Visited).
-in_group_dfs(Board , Row, Col,  Visited , Group) :- board_size(_Size), (Row < 0; Col < 0; Row >= _Size; Col >= _Size).
-in_group_dfs(Board, Row, Col, Visited , Group ) :- get_piece(Board, Row-Col, empty). 
-in_group_dfs(Board, Row, Col, Visited, Group) :-
-        \+ member(Row-Col, Visited),
-        Visited1 = [Row-Col | Visited],
-        write(Visited1), nl,
-        RowT is Row - 1, in_group_dfs(Board, RowT, Col, Visited1, Group),
-        RowB is Row + 1, in_group_dfs(Board, RowB, Col, Visited1, Group),
-        ColL is Col - 1, in_group_dfs(Board, Row, ColL, Visited1, Group),
-        ColR is Col + 1, in_group_dfs(Board, Row, ColR, Visited1, Group),
-        write(Row-Col), nl,
-        Visited = Visited1,
-        Group = [Row-Col | Group].
-    
-
-    
-    
 
 % remove_separate_pieces_aux(+Board, +Group, +TempBoard, -NewBoard)
 % Auxiliary predicate for remove_separate_pieces/3.
@@ -154,10 +348,8 @@ remove_separate_pieces_aux(Board, [RowIndex-ColIndex | T], TempBoard, NewBoard):
 remove_separate_pieces(Board, RowIndex-ColIndex, NewBoard):-
     board_size(_Size),
     empty_board(_Size, TempBoard),
-    write('Group: '), nl,
-    % setof(RowIndex1-ColIndex1,(Visited = [], in_group_dfs(Board, RowIndex, ColIndex, RowIndex1, ColIndex1, Visited)), Group),
-    in_group_dfs(Board, RowIndex, ColIndex, [], Group),
-    write(Group), nl,
+    setof(RowIndex1-ColIndex1,(Visited = [], in_group_dfs(Board, RowIndex, ColIndex, RowIndex1, ColIndex1, Visited)), Group),
+    % in_group_dfs(Board, RowIndex, ColIndex, [], Group),
     remove_separate_pieces_aux(Board, Group, TempBoard, NewBoard).
 
 % piece_count(+Board, +Piece, -Count)

@@ -14,23 +14,25 @@ choose_board(Size):-
 % menu/0
 % Displays the menu and reads the user's option
 menu :- 
-        write('Welcome to Clusterfuss!'), nl,
+        write('***Welcome to Clusterfuss!***'), nl,
+        repeat, nl,
         write('Choose a gamemode:'), nl,
         write('1. Player vs Player'), nl,
         write('2. Player vs Computer'), nl,
         write('3. Computer vs Player'), nl,
         write('4. Computer vs Computer'), nl,
-        write('5. Exit'), nl,
-        repeat,
+        write('5. Intructions'), nl,
+        write('6. Exit'), nl,
         read_number(Option),
-        member(Option, [1, 2, 3, 4, 5]), !,
+        member(Option, [1, 2, 3, 4, 5, 6]),
         (
             (Option = 1, !, choose_board(Size));
             (Option = 2, !, choose_board(Size));
             (Option = 3, !, choose_board(Size));
             (Option = 4, !, choose_board(Size));
-            (Option = 5, !, halt)
-        ),
+            (Option = 5, instructions, fail);
+            (Option = 6, !, halt)
+        ), !,
         asserta(game_mode(Option)),
         read_names(_Player1, _Player2, Option).
     
@@ -69,3 +71,18 @@ read_names(Player1, Player2, 4):-
         asserta(player_name(player1, Player1)),
         asserta(player_name(player2, Player2)).
 
+
+% instructions/0
+% Displays the game's instructions
+instructions :-
+        write('**Instructions**'), nl, nl,
+        write('Clusterfuss is a two-player game played on a square board of variable size.'), nl,
+        write('The objective of the game is to remove all enemy pieces from the board.'), nl,
+        write('Every turn a player can move one of his pieces orthogonaly (UP, DOWN, LEFT or RIGHT).'), nl,
+        write('Every move must be a piece capture, meaning that the position where the player moves the piece to must have an enemy or a friendly piece.'), nl,
+        write('A move is only valid if it doesn\'t separate any friendly piece from the group.'), nl,
+        write('Any piece that is separated from the group is removed from the board.'), nl,
+        write('The game ends when one of the players has no pieces left on the board.'), nl, nl,
+        write('Lets have some fun with Clusterfuss!'), nl, nl,
+        write('(Write anything to return to the menu)'), nl,
+        read(_).
