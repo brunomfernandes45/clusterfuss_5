@@ -1,10 +1,10 @@
 % initial_state(+Size, -GameState)
 % Returns a initial_state of a given size
 initial_state(4, [ player1, 
-    [red, blue, red, blue],
-    [blue, red, blue, red],
-    [red, blue, red, blue],
-    [blue, red, blue, red]
+    [empty, red, blue, empty],
+    [empty, empty, empty, empty],
+    [empty, empty, empty, empty],
+    [empty, empty, empty, empty]
 ]).
 
 initial_state(6, [ player1, 
@@ -125,7 +125,7 @@ game(GameState, 4):-
     display_game(GameState),
     GameState = [Player | Board ],
     level(Player,Level),
-    write('Write anything to let the Bot play'),nl,
+    write('Write anything to let the Bot play'), nl,
     read( _ ),
     move(GameState, Move, NewGameState),
     game(NewGameState, 4).

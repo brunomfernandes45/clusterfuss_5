@@ -66,15 +66,14 @@ valid_move(GameState, [RowIndex, ColIndex, NewRowIndex, NewColIndex], NewGameSta
         GameState = [Player | Board],
         valid_piece(Player, Piece),
         switch_turn(Player, Opponent),
-        valid_piece(Opponent, OpponentPiece),
         get_piece(Board, RowIndex-ColIndex, Piece),
         is_connected(RowIndex, ColIndex, NewRowIndex, NewColIndex),
         get_piece(Board, NewRowIndex-NewColIndex, P),
         member(P, [red, blue]),
-        piece_count(Board, Player, Count1),
+        piece_count(Board, Piece, Count1),
         move_piece(Board, [RowIndex, ColIndex, NewRowIndex, NewColIndex], TempBoard),
-        piece_count(TempBoard, Player, Count2),
-        Count1 =:= Count2,
+        piece_count(TempBoard, Piece, Count2),
+        Count1 == Count2,
         NewGameState = [Opponent | TempBoard].
 
 % valid_moves(+GameState, +Player, -ListOfMoves)
@@ -97,7 +96,7 @@ get_valid_move(Board, Player, [RowIndex, ColIndex, NewRowIndex, NewColIndex], Ne
         set_piece(TempBoard1, RowIndex-ColIndex, empty, TempBoard2),
         remove_separate_pieces(TempBoard2, NewRowIndex-NewColIndex, NewBoard),
         piece_count(NewBoard, Piece, Count2),
-        Count1 =:= Count2.
+        Count1 == Count2.
 
 % choose_move(+GameState, +Player, +Level, -Move)
 % Chooses a move for the given player

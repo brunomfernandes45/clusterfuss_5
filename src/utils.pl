@@ -1,4 +1,3 @@
-
 % read_number(-Number)
 % Unifies Number with the number read from the input stream.
 read_number(Number):-
@@ -82,7 +81,6 @@ is_connected(0, 6, 1, 6).
 is_connected(0, 6, 0, 7).
 is_connected(0, 7, 0, 6).
 is_connected(0, 7, 1, 7).
-is_connected(1, 0, 0, 1).
 is_connected(1, 0, 0, 0).
 is_connected(1, 0, 1, 1).
 is_connected(1, 0, 2, 0).
@@ -330,25 +328,37 @@ in_group_dfs(Board, Row1, Col1, Row2, Col2, Visited):-
         Visited1 = [Row1-Col1 | Visited],
         in_group_dfs(Board, Row3, Col3, Row2, Col2, Visited1). 
 */
-in_group_dfs( _ , Row, Col, Visited, _ ) :- member(Row-Col, Visited), !.
-in_group_dfs(Board, Row, Col, Visited, Group) :- 
+
+% in_group_bfs(+Board, +Row, +Col, +Visited, +Group)
+% Unifies Group with the list of positions that are in the same group as the piece at Row-Col.
+in_group_bfs(Board, Row, Col, Visited, Group) :-
+        in_group_bfs_aux(Board, [Row-Col], Visited, Group).
+
+% in_group_bfs_aux(+Board, +Queue, +Visited, -Group)
+% Auxiliary predicate for in_group_bfs/5.
+in_group_bfs_aux(_, [], Group, Group).
+in_group_bfs_aux(Board, Queue, Visited, Group) :-
+        Queue = [Row-Col | T],
         Visited1 = [Row-Col | Visited],
-        Group1 = [Row-Col | Group],
-        setof(Row1-Col1, (is_connected(Row, Col, Row1, Col1), get_piece(Board, Row1-Col1, P), member(P, [red, blue])), List),
-        write('List: '), write(List), nl,
-        in_group_dfs_aux(Board, List, Visited1, Group1, Group2),
-        write('Group2: '), write(Group2), nl,
-        Group = Group2.
-
-% in_group_dfs_aux(+Board, +List, +Visited, +Group, -NewGroup)
-% Auxiliary predicate for in_group_dfs/5.
-in_group_dfs_aux(_, [], _, Group, Group).
-in_group_dfs_aux(Board, [Row1-Col1 | T], Visited, Group, NewGroup) :-
-        in_group_dfs(Board, Row1, Col1, Visited, Group),
-        in_group_dfs_aux(Board, T, Visited, Group, NewGroup).
+        ( 
+                findall(Row1-Col1, 
+                        (is_connected(Row, Col, Row1, Col1), 
+                        \+ member(Row1-Col1, Visited1),
+                        get_piece(Board, Row1-Col1, P),
+                        member(P, [red, blue]), true), 
+                        Neighbors) -> 
+                        true
+                ; Neighbors = [] 
+        ),
+        ( 
+                setof(X, 
+                        member(X, Neighbors), 
+                        Neighbors1) -> 
+                        true
+                ; Neighbors1 = [] ),
+        append(T, Neighbors1, NewQueue),
+        in_group_bfs_aux(Board, NewQueue, Visited1, Group).
     
-
-
 % remove_separate_pieces_aux(+Board, +Group, +TempBoard, -NewBoard)
 % Auxiliary predicate for remove_separate_pieces/3.
 remove_separate_pieces_aux(_, [], NewBoard, NewBoard).
@@ -360,19 +370,26 @@ remove_separate_pieces_aux(Board, [RowIndex-ColIndex | T], TempBoard, NewBoard):
 % remove_separate_pieces(+Board, +RowIndex-ColIndex, -NewBoard)
 % Unifies NewBoard with the board resulting from removing all the pieces that are not in the same group as the piece at RowIndex-ColIndex.
 remove_separate_pieces(Board, RowIndex-ColIndex, NewBoard):-
-        board_size(_Size),
-        empty_board(_Size, TempBoard),
-        %setof(RowIndex1-ColIndex1,(Visited = [], in_group_dfs(Board, RowIndex, ColIndex, RowIndex1, ColIndex1, Visited)), Group),
-        write('Group: '), nl,
-        in_group_dfs(Board, RowIndex, ColIndex, [], Group),
-        write(Group), nl,
-        remove_separate_pieces_aux(Board, Group, TempBoard, NewBoard).
+        board_size(Size),
+        empty_board(Size, TempBoard),
+        in_group_bfs(Board, RowIndex, ColIndex, [], Group),
+        setof(X, member(X, Group), Group1),
+        remove_separate_pieces_aux(Board, Group1, TempBoard, NewBoard).
 
 % piece_count(+Board, +Piece, -Count)
 % Unifies Count with the number of pieces of type Piece in Board.
 piece_count(Board, Piece, Count) :-
-        ( setof(RowIndex-ColIndex, get_piece(Board, RowIndex-ColIndex, Piece), List) -> 
-                true 
-        ; List = [] ),
+        ( 
+                setof(RowIndex-ColIndex, 
+                        get_piece(Board, RowIndex-ColIndex, Piece), 
+                        List) -> 
+                        true 
+                ; List = [] 
+        ),
         length(List, Count).
     
+clear_data :- 
+        retractall(board_size(_)),
+        retractall(level(_, _)),
+        retractall(player_name(_, _)),
+        retractall(game_mode(_)).
