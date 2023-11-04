@@ -285,7 +285,6 @@ is_connected(7, 7, 7, 6).
 is_connected(7, 7, 6, 7).
 
 
-
 % get_move_indexes(+Move, -IndexesList)
 % Unifies IndexesList with the list of indexes corresponding to Move.
 get_move_indexes(Start-Dest, [RowIndex, ColIndex, NewRowIndex, NewColIndex]):-
@@ -310,24 +309,6 @@ abs(X, Y) :-
 % Checks if Piece belongs to Player or unifies Piece with the piece corresponding to Player.
 valid_piece(player1, 'red').
 valid_piece(player2, 'blue').
-
-/*
-% in_group_dfs(+Board, +Row1, +Col1, +Row2, +Col2, +Visited)
-% Checks if the two positions are in the same group.
-in_group_dfs( _ , Row1, Col1, Row1, Col1, _ ).
-in_group_dfs( Board , Row1, Col1, Row2, Col2, Visited):-
-        is_connected(Row1, Col1, Row2, Col2),
-        \+ member(Row2-Col2, Visited),
-        get_piece(Board, Row2-Col2, Piece),
-        member(Piece, [red, blue]).
-in_group_dfs(Board, Row1, Col1, Row2, Col2, Visited):-
-        is_connected(Row1, Col1, Row3, Col3),
-        \+ member(Row3-Col3, Visited),
-        get_piece(Board, Row3-Col3, Piece),
-        member(Piece, [red, blue]),
-        Visited1 = [Row1-Col1 | Visited],
-        in_group_dfs(Board, Row3, Col3, Row2, Col2, Visited1). 
-*/
 
 % in_group_bfs(+Board, +Row, +Col, +Visited, +Group)
 % Unifies Group with the list of positions that are in the same group as the piece at Row-Col.
@@ -387,7 +368,19 @@ piece_count(Board, Piece, Count) :-
                 ; List = [] 
         ),
         length(List, Count).
-    
+
+% value(+GameState, +Player, -Value)
+% Unifies Value with the value of GameState for Player.
+value(GameState, _, 1000) :-
+        game_over(GameState, _), !.
+value([ _ | Board], Player, Value) :-
+        valid_piece(Player, Piece),
+        switch_turn(Player, Opponent),
+        valid_piece(Opponent, OpponentPiece),
+        piece_count(Board, Piece, FriendlyCount),
+        piece_count(Board, OpponentPiece, EnemyCount),
+        Value is FriendlyCount - EnemyCount.
+
 clear_data :- 
         retractall(board_size(_)),
         retractall(level(_, _)),

@@ -1,10 +1,10 @@
 % initial_state(+Size, -GameState)
 % Returns a initial_state of a given size
 initial_state(4, [ player1, 
-    [empty, red, blue, empty],
-    [empty, empty, empty, empty],
-    [empty, empty, empty, empty],
-    [empty, empty, empty, empty]
+    [red, blue, red, blue],
+    [blue, red, blue, red],
+    [red, blue, red, blue],
+    [blue, red, blue, red]
 ]).
 
 initial_state(6, [ player1, 
@@ -83,7 +83,7 @@ game(GameState, 1) :-
 
 game(GameState, 2) :-
     display_game(GameState),
-    GameState = [Player | Board],
+    GameState = [Player | _ ],
     (
         (   
             Player = player1,
@@ -93,17 +93,16 @@ game(GameState, 2) :-
         );
         (   
             Player = player2,
-            level(Player,Level),
             write('Write anything to let the Bot play'),nl,
             read( _ ),
-            move(GameState, Move, NewGameState)
+            move(GameState, _ , NewGameState)
         )
     ),
     game(NewGameState, 2).
 
 game(GameState, 3) :-
     display_game(GameState),
-    GameState = [Player | Board ],
+    GameState = [Player | _ ],
     (
         (   
             Player = player2,
@@ -113,19 +112,16 @@ game(GameState, 3) :-
         );
         (   
             Player = player1,
-            level(Player,Level),
             write('Write anything to let the Bot play'),nl,
             read( _ ),
-            move(GameState, Move, NewGameState)               
+            move(GameState, _ , NewGameState)               
         )
     ),
     game(NewGameState, 3).
 
 game(GameState, 4):-
     display_game(GameState),
-    GameState = [Player | Board ],
-    level(Player,Level),
     write('Write anything to let the Bot play'), nl,
     read( _ ),
-    move(GameState, Move, NewGameState),
+    move(GameState, _ , NewGameState),
     game(NewGameState, 4).
