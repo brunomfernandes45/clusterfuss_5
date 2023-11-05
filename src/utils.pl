@@ -358,12 +358,14 @@ in_group_bfs_aux(Board, Queue, Visited, Group) :-
         Visited1 = [Row-Col | Visited],
         ( 
                 findall(Row1-Col1, 
-                        (is_connected(Row, Col, Row1, Col1), 
-                        \+ member(Row1-Col1, Visited1),
-                        get_piece(Board, Row1-Col1, P),
-                        member(P, [red, blue]), true), 
+                        (
+                                is_connected(Row, Col, Row1, Col1), 
+                                \+ member(Row1-Col1, Visited1),
+                                get_piece(Board, Row1-Col1, P),
+                                member(P, [red, blue])
+                        ),      
                         Neighbors) -> 
-                        true
+                true
                 ; Neighbors = [] 
         ),
         ( 
@@ -371,7 +373,8 @@ in_group_bfs_aux(Board, Queue, Visited, Group) :-
                         member(X, Neighbors), 
                         Neighbors1) -> 
                         true
-                ; Neighbors1 = [] ),
+                ; Neighbors1 = [] 
+        ),
         append(T, Neighbors1, NewQueue),
         in_group_bfs_aux(Board, NewQueue, Visited1, Group).
     
