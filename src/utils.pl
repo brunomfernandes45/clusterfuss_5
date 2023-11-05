@@ -43,6 +43,8 @@ read_names(Player1, Player2, 4):-
         asserta(player_name(player1, Player1)),
         asserta(player_name(player2, Player2)).
 
+% print_invalid_move_message(+Flag)
+% Prints a message if the move is invalid.
 print_invalid_move_message(Flag) :-
         Flag,
         write('Invalid move! Please select another move.'), nl.
