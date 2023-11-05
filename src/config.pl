@@ -15,7 +15,6 @@ choose_board(Size):-
         fail
     ).
 
-
 % menu/0
 % Displays the menu and reads the user's option
 menu :- 
@@ -82,43 +81,12 @@ menu :-
                 )
         ), !.
 
-
-
-
-
 % config(-GameState)
 % Configures the game according to the user's option
 config(GameState) :- 
         menu,
         board_size(_Size),
-        initial_state(_Size, GameState).  
-                    
-% read_names(-Player1, -Player2, +GameMode)
-% Asks the user for the players' names
-read_names(Player1, Player2, 1):-
-        write('Player 1 name: '), nl,
-        read(Player1),
-        write('Player 2 name: '), nl,
-        read(Player2),
-        asserta(player_name(player1, Player1)),
-        asserta(player_name(player2, Player2)).
-read_names(Player1, Player2, 2):-
-        write('Player name: '), nl,
-        read(Player1),
-        Player2 = 'Bot',
-        asserta(player_name(player1, Player1)),
-        asserta(player_name(player2, Player2)).
-read_names(Player1, Player2, 3):-
-        write('Player name: '), nl,
-        read(Player2),
-        Player1 = 'Bot',
-        asserta(player_name(player1, Player1)),
-        asserta(player_name(player2, Player2)).
-read_names(Player1, Player2, 4):-
-        Player1 = 'Bot1',
-        Player2 = 'Bot2',
-        asserta(player_name(player1, Player1)),
-        asserta(player_name(player2, Player2)).
+        initial_state(_Size, GameState).
 
 % instructions/0
 % Displays the game's instructions
@@ -133,7 +101,7 @@ instructions :-
         write('The game ends when one of the players has no pieces left on the board.'), nl, nl,
         write('Lets have some fun with Clusterfuss!'), nl, nl,
         write('(Press enter to return to the menu)'), nl,
-        read_line(_).
+        read_line( _ ).
 
 % get_level(+Player, -Level)
 % Asks the user for the level of the bot

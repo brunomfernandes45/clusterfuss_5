@@ -12,6 +12,37 @@ read_number_aux(Number, Acc):-
         read_number_aux(Number, Acc1).
 read_number_aux(Number, Number).
 
+% read_names(-Player1, -Player2, +GameMode)
+% Asks the user for the players' names
+read_names(Player1, Player2, 1):-
+        write('Player 1 name: '), nl,
+        read_line(Player1Codes),
+        atom_codes(Player1, Player1Codes),
+        write('Player 2 name: '), nl,
+        read_line(Player2Codes),
+        atom_codes(Player2, Player2Codes),
+        asserta(player_name(player1, Player1)),
+        asserta(player_name(player2, Player2)).
+read_names(Player1, Player2, 2):-
+        write('Player name: '), nl,
+        read_line(Player1Codes),
+        atom_codes(Player1, Player1Codes),
+        Player2 = 'Bot',
+        asserta(player_name(player1, Player1)),
+        asserta(player_name(player2, Player2)).
+read_names(Player1, Player2, 3):-
+        write('Player name: '), nl,
+        read_line(Player2Codes),
+        atom_codes(Player2, Player2Codes),
+        Player1 = 'Bot',
+        asserta(player_name(player1, Player1)),
+        asserta(player_name(player2, Player2)).
+read_names(Player1, Player2, 4):-
+        Player1 = 'Bot1',
+        Player2 = 'Bot2',
+        asserta(player_name(player1, Player1)),
+        asserta(player_name(player2, Player2)).
+
 print_invalid_move_message(Flag) :-
         Flag,
         write('Invalid move! Please select another move.'), nl.
