@@ -76,6 +76,7 @@ game(GameState, _) :-
 
 game(GameState, 1) :-
     display_game(GameState),
+    repeat,
     get_move(Move),
     (
         move(GameState, Move, NewGameState)
@@ -91,17 +92,22 @@ game(GameState, 2) :-
         (   
             Player = player1,
             repeat,  
-                get_move(Move),
-                move(GameState, Move, NewGameState), !
+            get_move(Move),
+                (
+                    move(GameState, Move, NewGameState) 
+                    -> game(NewGameState, 2)
+                    ; print_invalid_move_message(true),
+                    fail
+                )
         );
         (   
             Player = player2,
             write('Write anything to let the Bot play'),nl,
             read( _ ),
-            move(GameState, _ , NewGameState)
+            move(GameState, _ , NewGameState),
+            game(NewGameState, 2)
         )
-    ),
-    game(NewGameState, 2).
+    ).
 
 game(GameState, 3) :-
     display_game(GameState),
@@ -110,17 +116,22 @@ game(GameState, 3) :-
         (   
             Player = player2,
             repeat,  
-                get_move(Move),
-                move(GameState, Move, NewGameState), !
+            get_move(Move),
+                (
+                    move(GameState, Move, NewGameState) 
+                    -> game(NewGameState, 2)
+                    ; print_invalid_move_message(true),
+                    fail
+                )
         );
         (   
             Player = player1,
             write('Write anything to let the Bot play'),nl,
             read( _ ),
-            move(GameState, _ , NewGameState)               
+            move(GameState, _ , NewGameState),
+            game(NewGameState, 3)           
         )
-    ),
-    game(NewGameState, 3).
+    ).
 
 game(GameState, 4):-
     display_game(GameState),
