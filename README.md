@@ -52,8 +52,6 @@ The rules of the game are the following:
 
 In the official game rulebook, it is stated that when a player has no available moves their turn is skipped. We did not implement this feature, because we found it to be unnecessary, since the player can **always** make a move.
 
-#### Example
-
 ### Groups
 
 All groups are comprised of checkers ortogonally interconnected. Diagonal adjacencies are irrelevant in Clusterfuss. Groups may contain checkers of either or both colors. At the conclusion of each turn, there must exist only one group on the board.
