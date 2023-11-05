@@ -28,6 +28,8 @@ Then, you have to open Sicstus Prolog or other Prolog interpreter. For Sicstus P
 
 After that, you must consult the file *clusterfuss.pl* that is inside the *src* directory running `consult(clusterfuss).`, and then run the command `play.`. The game will then start.
 
+***Note***: If you are using Sicstus Prolog on Windows, consider changing the font to a terminal font (like Lucida Console), to improve the visualization of the game.
+
 ## Game Description
 
 Clusterfuss was designed in July 2023 by Mark Steere.
@@ -50,7 +52,7 @@ The rules of the game are the following:
 
 In the official game rulebook, it is stated that when a player has no available moves their turn is skipped. We did not implement this feature, because we found it to be unnecessary, since the player can **always** make a move.
 
-#### Example 
+#### Example
 
 ### Groups
 
@@ -88,8 +90,7 @@ Then depending on the game mode, the game either asks the human player for a mov
 The move validation and execution is realized by the predicate `move(+GameState, +Move, -NewGameState)`.
 This predicate works in different ways for computer players and human players.
 
-For computer players, the predicate `choose_move(+GameState, +Player, +Level, -Move)`, and the move is chosen from the list of valid moves
-calculated by the predicate `valid_moves(+GameState, +Player, -ListOfMoves)`.
+For computer players, the predicate `choose_move(+GameState, +Player, +Level, -Move)`, and the move is chosen from the list of valid moves calculated by the predicate `valid_moves(+GameState, +Player, -ListOfMoves)`. If the Level is 1 (Random), then the move is chosen randomly from the list of valid moves. If the Level is 2 (Best), then it runs the predicate `minimax(+GameState, -BestMove)` , which chooses the move that generates the game state with the highest value for the player, using the Minimax algorithm. If there are multiple moves with the same value, the move is chosen randomly from those moves.
 
 For human players, the predicate `valid_move(+GameState, +MoveIndexes, -NewGameState)` is called to validate the move. It returns NewGameState, because to verify if the move is valid, it generates the new board and checks if the board is valid, so for efficiency purposes, it returns the new state.
 
@@ -113,7 +114,7 @@ Here is the end of game message:
 
 ### Game State Evaluation
 
-The game state evaluation is done by the predicate `value(+GameState, +Player, -Value)`. This predicate returns the value of the game state for the player. The value is calculated by the number of pieces the player has on the board minus the number of pieces the opponent has on the board. This predicate is used by the computer player to choose the best move.
+The game state evaluation is done by the predicate `value(+GameState, +Player, -Value)`. This predicate returns the value of the game state for the player. The value is calculated by the number of pieces the player has on the board minus the number of pieces the opponent has on the board. This predicate is used by the computer player to choose the best move. If the GameState is a final state, the value is 1000.
 
 ### Computer Plays
 
@@ -135,5 +136,5 @@ We found no issues with our implementation.
 
 ## Bibliography
 
-- Clusterfuss (https://www.marksteeregames.com/Clusterfuss_Rules.pdf)
-- Prolog Documentation (https://www.swi-prolog.org/)
+- Clusterfuss (*[clusterfuss.pdf](clusterfuss.pdf)*)
+- Prolog Documentation (<https://www.swi-prolog.org/>)
