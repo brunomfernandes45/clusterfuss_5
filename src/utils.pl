@@ -385,6 +385,8 @@ value([ _ | Board], Player, Value) :-
         piece_count(Board, OpponentPiece, EnemyCount),
         Value is FriendlyCount - EnemyCount.
 
+% clear_data/0
+% Clears all the dynamic predicates.
 clear_data :- 
         retractall(board_size(_)),
         retractall(level(_, _)),
