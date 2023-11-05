@@ -76,10 +76,13 @@ game(GameState, _) :-
 
 game(GameState, 1) :-
     display_game(GameState),
-    repeat,
-        get_move(Move),
-        move(GameState, Move, NewGameState), !,
-    game(NewGameState, 1).
+    get_move(Move),
+    (
+        move(GameState, Move, NewGameState)
+        -> game(NewGameState, 1)
+        ;  print_invalid_move_message(true),
+           fail
+    ).
 
 game(GameState, 2) :-
     display_game(GameState),
