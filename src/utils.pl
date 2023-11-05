@@ -47,6 +47,18 @@ print_invalid_move_message(Flag) :-
         Flag,
         write('Invalid move! Please select another move.'), nl.
 
+% get_move(-Move)
+% Gets the move from the player
+get_move(Move) :-
+        repeat,
+        write('Position of the piece you want to move: '),
+        read_line(StartCodes), nl,
+        atom_codes(Start, StartCodes),
+        write('Position to where you want to move it: '),
+        read_line(DestCodes), nl,
+        atom_codes(Dest, DestCodes),
+        Move = Start-Dest.
+
 % replace(+List, +Index, +Element, -NewList)
 % Unifies NewList with the list resulting from replacing the element at Index with Element.
 replace([_ | T], 0, X, [X | T]).
