@@ -1,13 +1,3 @@
-% get_move(-Move)
-% Gets the move from the player
-get_move(Move) :-
-        repeat,
-        write('Position of the piece you want to move: '),
-        read(Start), nl,
-        write('Position to where you want to move it: '),
-        read(Dest), nl,
-        Move = Start-Dest.
-
 % get_piece(+Board, +Row-Col, -Piece)
 % Gets the piece at the given position
 get_piece(Board, Row-Col, Piece) :-

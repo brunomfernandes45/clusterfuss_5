@@ -66,6 +66,8 @@ game_over([Player | Board], Winner) :-
     Count == 0,
     switch_turn(Player, Winner).
 
+% game(+GameState, +GameMode)
+% Main game loop
 game(GameState, _) :-
     game_over(GameState, Winner),
     !,
@@ -102,8 +104,8 @@ game(GameState, 2) :-
         );
         (   
             Player = player2,
-            write('Write anything to let the Bot play'),nl,
-            read( _ ),
+            write('Press enter to let the Bot play'), nl,
+            read_line( _ ),
             move(GameState, _ , NewGameState),
             game(NewGameState, 2)
         )
@@ -126,8 +128,8 @@ game(GameState, 3) :-
         );
         (   
             Player = player1,
-            write('Write anything to let the Bot play'),nl,
-            read( _ ),
+            write('Press enter to let the Bot play'), nl,
+            read_line( _ ),
             move(GameState, _ , NewGameState),
             game(NewGameState, 3)           
         )
@@ -135,7 +137,7 @@ game(GameState, 3) :-
 
 game(GameState, 4):-
     display_game(GameState),
-    write('Write anything to let the Bot play'), nl,
-    read( _ ),
+    write('Press enter to let the Bot play'), nl,
+    read_line( _ ),
     move(GameState, _ , NewGameState),
     game(NewGameState, 4).
