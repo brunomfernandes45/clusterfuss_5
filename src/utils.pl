@@ -12,6 +12,10 @@ read_number_aux(Number, Acc):-
         read_number_aux(Number, Acc1).
 read_number_aux(Number, Number).
 
+print_invalid_move_message(Flag) :-
+        Flag,
+        write('Invalid move! Please select another move.'), nl.
+
 % replace(+List, +Index, +Element, -NewList)
 % Unifies NewList with the list resulting from replacing the element at Index with Element.
 replace([_ | T], 0, X, [X | T]).
@@ -384,6 +388,8 @@ value([ _ | Board], Player, Value) :-
         piece_count(Board, OpponentPiece, EnemyCount),
         Value is FriendlyCount - EnemyCount.
 
+% clear_data/0
+% Clears all the dynamic predicates.
 clear_data :- 
         retractall(board_size(_)),
         retractall(level(_, _)),

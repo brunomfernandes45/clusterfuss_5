@@ -2,21 +2,24 @@
 :- dynamic game_mode/1.
 :- dynamic player_name/2.
 :- dynamic level/2.
-:- dynamic should_print_menu/1.
 
 % choose_board(-Size)
-% Size is the size of the board chosen by the user
+% Asks the user for the board size
 choose_board(Size):-
-        write('Board size: 4x4, 6x6 or 8x8? (Write only one number, for example, 4 corresponds to the 4x4 option)'), nl,
-        repeat,
-        read_number(Size),
-        member(Size, [4, 6, 8]), !,
-        asserta(board_size(Size)).
+    nl, write('Board size: 4x4, 6x6 or 8x8? (Write only one number, for example, 4 corresponds to the 4x4 option)'), nl,
+    repeat,
+    read_number(Size),
+    (   member(Size, [4, 6, 8])
+    ->  asserta(board_size(Size))
+    ;   nl, write('Invalid board size. Please choose 4, 6, or 8.'), nl,
+        fail
+    ).
 
 
 % menu/0
 % Displays the menu and reads the user's option
 menu :- 
+        nl,
         write('***Welcome to Clusterfuss!***'), nl,
         write('Choose a gamemode:'), nl,
         write('1. Player vs Player'), nl,
@@ -25,9 +28,8 @@ menu :-
         write('4. Computer vs Computer'), nl,
         write('5. Instructions'), nl,
         write('6. Exit'), nl,
-        repeat, nl,
+        repeat,
         read_number(Option),
-        member(Option, [1, 2, 3, 4, 5, 6]),
         (
                 (
                         Option = 1, 
@@ -38,6 +40,7 @@ menu :-
                 (
                         Option = 2, 
                         !, choose_board(Size), 
+                        asserta(player_name(player2, 'Bot')),
                         get_level(player2, Level), 
                         asserta(level(player2, Level)),
                         asserta(game_mode(Option)),
@@ -45,7 +48,8 @@ menu :-
                 );
                 (
                         Option = 3, 
-                        !, choose_board(Size), 
+                        !, choose_board(Size),
+                        asserta(player_name(player1, 'Bot')),
                         get_level(player1, Level), 
                         asserta(level(player1, Level)),
                         asserta(game_mode(Option)),
@@ -53,9 +57,11 @@ menu :-
                 );
                 (       
                         Option = 4, 
-                        !, choose_board(Size), 
-                        get_level(player1, Level1), 
-                        asserta(level(player1, Level1)), 
+                        !, choose_board(Size),
+                        asserta(player_name(player1, 'Bot1')),
+                        get_level(player1, Level1),
+                        asserta(level(player1, Level1)),
+                        asserta(player_name(player2, 'Bot2')),
                         get_level(player2, Level2), 
                         asserta(level(player2, Level2)),
                         asserta(game_mode(Option)),
@@ -63,14 +69,21 @@ menu :-
                 );
                 (
                         Option = 5, 
-                        nl, instructions, 
+                        nl, instructions,
                         menu
                 );
                 (
                         Option = 6, 
                         !, halt
+                );
+                (
+                        nl, write('Invalid option. Please choose an option between 1 and 6.'), nl,
+                        fail
                 )
         ), !.
+
+
+
 
 
 % config(-GameState)
@@ -107,7 +120,6 @@ read_names(Player1, Player2, 4):-
         asserta(player_name(player1, Player1)),
         asserta(player_name(player2, Player2)).
 
-
 % instructions/0
 % Displays the game's instructions
 instructions :-
@@ -120,13 +132,20 @@ instructions :-
         write('Any piece that is separated from the group is removed from the board.'), nl,
         write('The game ends when one of the players has no pieces left on the board.'), nl, nl,
         write('Lets have some fun with Clusterfuss!'), nl, nl,
-        write('(Write anything to return to the menu)'), nl,
-        read(_).
+        write('(Press enter to return to the menu)'), nl,
+        read_line(_).
 
-get_level(Player, Level):-
-        write('Choose a level for '), write(Player), write(':'), nl,
-        write('1. Random Move'), nl,
-        write('2. Best Move (Greedy)'), nl,
-        repeat,
-                read_number(Level),
-                member(Level, [1, 2]), !.
+% get_level(+Player, -Level)
+% Asks the user for the level of the bot
+get_level(Player, Level) :-
+    player_name(Player, PlayerName),
+    nl, write('Choose a level for '), write(PlayerName), write(':'), nl,
+    write('1. Random Move'), nl,
+    write('2. Best Move (Greedy)'), nl,
+    repeat,
+    read_number(Level),
+    (   member(Level, [1, 2])
+    ->  true
+    ;   nl, write('Invalid level. Please choose 1 or 2.'), nl,
+        fail
+    ).
