@@ -136,5 +136,5 @@ We found no issues with our implementation.
 
 ## Bibliography
 
-- Clusterfuss (*[clusterfuss.pdf](clusterfuss.pdf)*)
-- Prolog Documentation (<https://www.swi-prolog.org/>)
+- Clusterfuss ([*clusterfuss.pdf*](clusterfuss.pdf))
+- Prolog Documentation (*<https://www.swi-prolog.org/>*)
