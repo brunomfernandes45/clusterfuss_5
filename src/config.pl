@@ -2,6 +2,7 @@
 :- dynamic game_mode/1.
 :- dynamic player_name/2.
 :- dynamic level/2.
+:- dynamic should_print_menu/1.
 
 % choose_board(-Size)
 % Size is the size of the board chosen by the user
@@ -12,11 +13,11 @@ choose_board(Size):-
         member(Size, [4, 6, 8]), !,
         asserta(board_size(Size)).
 
+
 % menu/0
 % Displays the menu and reads the user's option
 menu :- 
         write('***Welcome to Clusterfuss!***'), nl,
-        repeat, nl,
         write('Choose a gamemode:'), nl,
         write('1. Player vs Player'), nl,
         write('2. Player vs Computer'), nl,
@@ -24,19 +25,53 @@ menu :-
         write('4. Computer vs Computer'), nl,
         write('5. Instructions'), nl,
         write('6. Exit'), nl,
+        repeat, nl,
         read_number(Option),
         member(Option, [1, 2, 3, 4, 5, 6]),
         (
-            (Option = 1, !, choose_board(Size));
-            (Option = 2, !, choose_board(Size), get_level(player2, Level), asserta(level(player2, Level)));
-            (Option = 3, !, choose_board(Size), get_level(player1, Level), asserta(level(player1, Level)));
-            (Option = 4, !, choose_board(Size), get_level(player1, Level1), asserta(level(player1, Level1)), get_level(player2, Level2), asserta(level(player2, Level2)));
-            (Option = 5, nl, instructions, fail);
-            (Option = 6, !, halt)
-        ), !,
-        asserta(game_mode(Option)),
-        read_names(_Player1, _Player2, Option).
-    
+                (
+                        Option = 1, 
+                        !, choose_board(Size),
+                        asserta(game_mode(Option)),
+                        read_names(_Player1, _Player2, Option)
+                );
+                (
+                        Option = 2, 
+                        !, choose_board(Size), 
+                        get_level(player2, Level), 
+                        asserta(level(player2, Level)),
+                        asserta(game_mode(Option)),
+                        read_names(_Player1, _Player2, Option)
+                );
+                (
+                        Option = 3, 
+                        !, choose_board(Size), 
+                        get_level(player1, Level), 
+                        asserta(level(player1, Level)),
+                        asserta(game_mode(Option)),
+                        read_names(_Player1, _Player2, Option)
+                );
+                (       
+                        Option = 4, 
+                        !, choose_board(Size), 
+                        get_level(player1, Level1), 
+                        asserta(level(player1, Level1)), 
+                        get_level(player2, Level2), 
+                        asserta(level(player2, Level2)),
+                        asserta(game_mode(Option)),
+                        read_names(_Player1, _Player2, Option)
+                );
+                (
+                        Option = 5, 
+                        nl, instructions, 
+                        menu
+                );
+                (
+                        Option = 6, 
+                        !, halt
+                )
+        ), !.
+
 
 % config(-GameState)
 % Configures the game according to the user's option
