@@ -6,11 +6,14 @@
 % choose_board(-Size)
 % Asks the user for the board size
 choose_board(Size):-
-        write('Board size: 4x4, 6x6 or 8x8? (Write only one number, for example, 4 corresponds to the 4x4 option)'), nl,
-        repeat,
-        read_number(Size),
-        member(Size, [4, 6, 8]), !,
-        asserta(board_size(Size)).
+    write('Board size: 4x4, 6x6 or 8x8? (Write only one number, for example, 4 corresponds to the 4x4 option)'), nl,
+    repeat,
+    read_number(Size),
+    (   member(Size, [4, 6, 8])
+    ->  asserta(board_size(Size))
+    ;   nl, write('Invalid board size. Please choose 4, 6, or 8.'), nl,
+        fail
+    ).
 
 
 % menu/0
@@ -74,9 +77,8 @@ menu :-
                         !, halt
                 );
                 (
-                        % Invalid option
-                        write('Invalid option'), nl,
-                        fail  % Retry the menu
+                        nl, write('Invalid option. Please choose an option between 1 and 6.'), nl,
+                        fail
                 )
         ), !.
 
@@ -118,7 +120,6 @@ read_names(Player1, Player2, 4):-
         asserta(player_name(player1, Player1)),
         asserta(player_name(player2, Player2)).
 
-
 % instructions/0
 % Displays the game's instructions
 instructions :-
@@ -134,11 +135,17 @@ instructions :-
         write('(Press enter to return to the menu)'), nl,
         read_line(_).
 
-get_level(Player, Level):-
-        player_name(Player, PlayerName),
-        write('Choose a level for '), write(PlayerName), write(':'), nl,
-        write('1. Random Move'), nl,
-        write('2. Best Move (Greedy)'), nl,
-        repeat,
-                read_number(Level),
-                member(Level, [1, 2]), !.
+% get_level(+Player, -Level)
+% Asks the user for the level of the bot
+get_level(Player, Level) :-
+    player_name(Player, PlayerName),
+    nl, write('Choose a level for '), write(PlayerName), write(':'), nl,
+    write('1. Random Move'), nl,
+    write('2. Best Move (Greedy)'), nl,
+    repeat,
+    read_number(Level),
+    (   member(Level, [1, 2])
+    ->  true
+    ;   nl, write('Invalid level. Please choose 1 or 2.'), nl,
+        fail
+    ).
