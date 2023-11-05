@@ -6,7 +6,7 @@
 % choose_board(-Size)
 % Asks the user for the board size
 choose_board(Size):-
-    write('Board size: 4x4, 6x6 or 8x8? (Write only one number, for example, 4 corresponds to the 4x4 option)'), nl,
+    nl, write('Board size: 4x4, 6x6 or 8x8? (Write only one number, for example, 4 corresponds to the 4x4 option)'), nl,
     repeat,
     read_number(Size),
     (   member(Size, [4, 6, 8])
